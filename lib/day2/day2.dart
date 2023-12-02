@@ -27,31 +27,32 @@ void day2() async {
       'green': 0,
     };
 
+    bool posiible = true;
+
     for (final (index, game) in gameRounds.indexed) {
       final roundValues = game.split(',');
       for (final (index, roundValue) in roundValues.indexed) {
         final cubicMap = roundValue.trim().split(' ');
-        print(cubicMap);
-        gameRoundValues.update(
-            cubicMap[1], (value) => value + (int.tryParse(cubicMap[0]) ?? 0));
+        gameRoundValues[cubicMap[1]] = (int.tryParse(cubicMap[0]) ?? 0);
       }
-    }
-    // print(gameRoundValues);
-    bool equals = true;
-    for (final max in maxes.entries) {
-      // print(max.value);
-      // print(gameRoundValues[max.key]);
-      if (max.value < gameRoundValues[max.key]!) {
-        equals = false;
+
+      for (final max in maxes.entries) {
+        // print(max.value);
+        // print(gameRoundValues[max.key]);
+        if (max.value < gameRoundValues[max.key]!) {
+          posiible = false;
+          break;
+        }
+      }
+
+      if (!posiible) {
         break;
       }
     }
 
-    // print(equals);
-    if (equals) {
+    if (posiible) {
       gamesSum += (int.tryParse(gameNumber) ?? 0);
     }
-    break;
   }
 
   print(gamesSum);

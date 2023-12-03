@@ -12,6 +12,11 @@ int gamesSum = 0;
 
 void day2() async {
   final content = await File('./data/day2.txt').readAsString();
+//   final content = """Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
+// Game 2: 1 blue, 2 green; 3 green, 4 blue, 1 red; 1 green, 1 blue
+// Game 3: 8 green, 6 blue, 20 red; 5 blue, 4 red, 13 green; 5 green, 1 red
+// Game 4: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red
+// Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green""";
   LineSplitter ls = LineSplitter();
   final arrOfGames = ls.convert(content);
 
@@ -27,32 +32,28 @@ void day2() async {
       'green': 0,
     };
 
-    bool posiible = true;
-
     for (final (index, game) in gameRounds.indexed) {
-      final roundValues = game.split(',');
+      final roundValues = game.trim().split(',');
+
       for (final (index, roundValue) in roundValues.indexed) {
         final cubicMap = roundValue.trim().split(' ');
-        gameRoundValues[cubicMap[1]] = (int.tryParse(cubicMap[0]) ?? 0);
+
+        gameRoundValues.update(cubicMap[1], (value) {
+          int cubicCurrentValue = (int.tryParse(cubicMap[0]) ?? 0);
+          if (value < cubicCurrentValue) {
+            return cubicCurrentValue;
+          }
+
+          return value;
+        });
       }
 
-      for (final max in maxes.entries) {
-        // print(max.value);
-        // print(gameRoundValues[max.key]);
-        if (max.value < gameRoundValues[max.key]!) {
-          posiible = false;
-          break;
-        }
-      }
-
-      if (!posiible) {
-        break;
-      }
     }
 
-    if (posiible) {
-      gamesSum += (int.tryParse(gameNumber) ?? 0);
-    }
+    gamesSum += gameRoundValues['blue']! *
+        gameRoundValues['red']! *
+        gameRoundValues['green']!;
+
   }
 
   print(gamesSum);

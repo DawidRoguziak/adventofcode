@@ -65,7 +65,7 @@ void day3() async {
           gearMap[gear]?.add(currentNumberInCol);
         }
 
-        print(gearMap);
+        // print(gearMap);
         // reset
         currentNumberInCol = 0;
         hasPart = false;
@@ -74,7 +74,7 @@ void day3() async {
     }
   }
 
-  gearMap.forEach((key, value) { 
+  gearMap.forEach((key, value) {
     if (value.length == 2) {
       taskTwo += value[0] * value[1];
     }
